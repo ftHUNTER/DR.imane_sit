@@ -1,0 +1,95 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;   /* important */
+}
+
+
+
+.content_holder {
+  width: 1200px;
+  height: 100%;
+  /* border: 1px red solid; */
+  padding-top: 10px;
+  
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+
+}
+
+.parts {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  
+}
+
+.part1, .part2 {
+  /* border: 1px blue solid; */
+  text-align: left;
+  height: 100%;
+}
+
+.part1 {
+  width: 700px;
+}
+
+p ,h1{
+  text-align: left;
+      font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+
+
+      /* space between line & text */
+
+}
+
+#p-with-line {
+    border-left: 3px solid blue; /* vertical line */
+  padding-left: 10px;  
+  margin-bottom: 10px; 
+}
+
+h1 {
+    padding-bottom: 20px;
+    font-family: sans-serif;
+    font-size:xx-large;
+
+}
+
+
+#p-like-title {
+  padding-bottom: 10px;
+}
+
+button {
+
+  margin-top: 5px;
+        font-family: sans-serif;
+
+  color: blue;
+  border: blue 1px solid;
+  background-color: white;
+  height: 40px;
+  width: 150px;
+  border-radius: 5px;
+}
+
+#first-button {
+  color: white;
+    background-color: blue;
+    margin-right: 15px;
+    margin-left: 12px;
+
+
+
+}
