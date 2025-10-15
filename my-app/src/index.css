@@ -6,16 +6,20 @@
 html, body {
   height: 100%;
   width: 100%;   /* important */
+  scroll-behavior: smooth;
 }
 
 
 
 .content_holder {
-  width: 1200px;
+  width: 100%;
+  max-width: 1200px; /* let large screens keep a max width */
   height: 100%;
-  /* border: 1px red solid; */
   padding-top: 10px;
-  
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 body {
@@ -27,11 +31,11 @@ body {
 
 .parts {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
+  gap: 12px;
   padding-left: 10px;
   padding-right: 10px;
-  
 }
 
 .part1, .part2 {
@@ -41,7 +45,8 @@ body {
 }
 
 .part1 {
-  width: 700px;
+  width: 100%;
+  max-width: 720px;
 }
 
 p ,h1{
@@ -93,3 +98,13 @@ button {
 
 
 }
+
+/* Mobile responsive stack */
+@media (max-width: 768px) {
+  .parts { flex-direction: column; align-items: stretch; }
+  .part1, .part2 { width: 100%; }
+  body { padding: 0 8px; }
+  h1 { font-size: 1.4rem; }
+  .content_holder { padding-left: 12px; padding-right: 12px; }
+}
+

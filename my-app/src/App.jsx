@@ -1,33 +1,126 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import './App.css'
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
+  const [isScrolled, setIsScrolled] = useState(false)
+  const scrollAnimRef = useRef(null)
+  const headerRef = useRef(null)
+
+  const smoothScrollTo = (targetY, duration = 700) => {
+    const prefersReduced = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const scrollingElement = document.scrollingElement || document.documentElement || document.body
+    if (prefersReduced) {
+      scrollingElement.scrollTo(0, targetY)
+      return
     }
-    setIsSidebarOpen(false)
+
+    // cancel previous
+    if (scrollAnimRef.current) cancelAnimationFrame(scrollAnimRef.current)
+
+    const startY = scrollingElement.scrollTop || window.pageYOffset
+    const distance = targetY - startY
+    const maxDuration = 1200
+    const minDuration = 480
+    const durationAdaptive = Math.min(maxDuration, Math.max(minDuration, Math.abs(distance) * 0.5))
+    let startTime = null
+
+    const easeInOutCubic = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+
+    // temporarily disable CSS smooth scroll to avoid conflicting behaviors
+    const html = document.documentElement
+    const prevScrollBehavior = html.style.scrollBehavior
+    html.style.scrollBehavior = 'auto'
+
+    const step = (timestamp) => {
+      if (!startTime) startTime = timestamp
+      const elapsed = timestamp - startTime
+      const progress = Math.min(elapsed / durationAdaptive, 1)
+      const eased = easeInOutCubic(progress)
+      const next = Math.round(startY + distance * eased)
+      scrollingElement.scrollTo(0, next)
+      if (elapsed < durationAdaptive) {
+        scrollAnimRef.current = requestAnimationFrame(step)
+      } else {
+        // restore
+        html.style.scrollBehavior = prevScrollBehavior || ''
+        scrollAnimRef.current = null
+      }
+    }
+
+    scrollAnimRef.current = requestAnimationFrame(step)
   }
+
+const scrollToSection = (sectionId, e) => {
+  e?.preventDefault();
+  document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+  setIsSidebarOpen(false);
+};
+
+
+  // reveal-on-scroll: add .is-visible to elements with .reveal
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible')
+          observer.unobserve(entry.target)
+        }
+      })
+    }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' })
+
+    const els = document.querySelectorAll('.reveal')
+    els.forEach((el, i) => {
+      // small stagger
+      el.style.transitionDelay = `${i * 70}ms`
+      observer.observe(el)
+    })
+
+    return () => observer.disconnect()
+  }, [])
+
+  // shrink header on scroll
+  useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY || window.pageYOffset
+      setIsScrolled(y > 24)
+    }
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   return (
     <>
-      <header className="header">
+  <header className={`header ${isScrolled ? 'shrink' : ''}`} ref={headerRef}>
         <div className="header-container">
           <div className="brand">Positive Impact Initiatives</div>
           <nav className="nav">
-            <a href="#home" onClick={() => scrollToSection('home')}>Accueil</a>
-            <a href="#about" onClick={() => scrollToSection('about')}>À propos</a>
-            <a href="#formations" onClick={() => scrollToSection('formations')}>Formations</a>
-            <a href="#distinctions" onClick={() => scrollToSection('distinctions')}>Distinctions</a>
-            <a href="#initiatives" onClick={() => scrollToSection('initiatives')}>Initiatives</a>
-            <a href="#contact" onClick={() => scrollToSection('contact')}>Contact</a>
+            <a href="#home" onClick={(e) => scrollToSection('home', e)}>Accueil</a>
+            <a href="#about" onClick={(e) => scrollToSection('about', e)}>À propos</a>
+            <a href="#formations" onClick={(e) => scrollToSection('formations', e)}>Formations</a>
+            <a href="#distinctions" onClick={(e) => scrollToSection('distinctions', e)}>Distinctions</a>
+            <a href="#initiatives" onClick={(e) => scrollToSection('initiatives', e)}>Initiatives</a>
+            <a href="#contact" className="cta" onClick={(e) => scrollToSection('contact', e)}>Contact</a>
           </nav>
-          <button className="hamburger" aria-label="Open menu" onClick={() => setIsSidebarOpen(true)}>
-            <span></span>
-            <span></span>
-            <span></span>
+          <button
+            className={`hamburger ${isSidebarOpen ? 'open' : ''}`}
+            aria-label={isSidebarOpen ? 'Close menu' : 'Open menu'}
+            onClick={() => setIsSidebarOpen((s) => !s)}
+            aria-expanded={isSidebarOpen}
+          >
+            {isSidebarOpen ? (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                <path d="M6 6l12 12M6 18L18 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            ) : (
+              <svg width="22" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                <path d="M3 6h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M3 12h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M3 18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            )}
           </button>
         </div>
       </header>
@@ -40,17 +133,17 @@ function App() {
           <button className="close-btn" aria-label="Close menu" onClick={() => setIsSidebarOpen(false)}>×</button>
         </div>
         <nav className="sidebar-nav">
-          <a href="#home" onClick={() => scrollToSection('home')}>Accueil</a>
-          <a href="#about" onClick={() => scrollToSection('about')}>À propos</a>
-          <a href="#formations" onClick={() => scrollToSection('formations')}>Formations</a>
-          <a href="#distinctions" onClick={() => scrollToSection('distinctions')}>Distinctions</a>
-          <a href="#initiatives" onClick={() => scrollToSection('initiatives')}>Initiatives</a>
-          <a href="#contact" onClick={() => scrollToSection('contact')}>Contact</a>
+          <a href="#home" onClick={(e) => scrollToSection('home', e)}>Accueil</a>
+          <a href="#about" onClick={(e) => scrollToSection('about', e)}>À propos</a>
+          <a href="#formations" onClick={(e) => scrollToSection('formations', e)}>Formations</a>
+          <a href="#distinctions" onClick={(e) => scrollToSection('distinctions', e)}>Distinctions</a>
+          <a href="#initiatives" onClick={(e) => scrollToSection('initiatives', e)}>Initiatives</a>
+          <a href="#contact" onClick={(e) => scrollToSection('contact', e)}>Contact</a>
         </nav>
       </aside>
 
       {/* Hero Section */}
-      <section id="home" className="hero">
+  <section id="home" className="hero reveal">
         <div className="hero-container">
           <div className="hero-content">
             <h1>Positive Impact Initiatives</h1>
@@ -64,11 +157,8 @@ function App() {
             </p>
 
             <div className="hero-buttons">
-              <button className="btn-primary" onClick={() => scrollToSection('initiatives')}>
+              <button className="btn-primary" onClick={(e) => scrollToSection('initiatives', e)}>
                 Découvrir nos initiatives
-              </button>
-              <button className="btn-secondary" onClick={() => scrollToSection('contact')}>
-                Nous rejoindre
               </button>
             </div>
           </div>
@@ -111,17 +201,17 @@ function App() {
                 la promotion du développement durable.
               </p>
             </div>
-            <div className="about-stats">
+              <div className="about-stats">
               <div className="stat">
-                <h3>17+</h3>
+                <h3 className="reveal">17+</h3>
                 <p>Années d'expérience</p>
               </div>
               <div className="stat">
-                <h3>80+</h3>
+                <h3 className="reveal">80+</h3>
                 <p>Pays WAPES</p>
               </div>
               <div className="stat">
-                <h3>57+</h3>
+                <h3 className="reveal">57+</h3>
                 <p>Pays PESNET-OCI</p>
               </div>
             </div>
@@ -134,19 +224,19 @@ function App() {
         <div className="container">
           <h2>Formations</h2>
           <div className="formations-grid">
-            <div className="formation-card">
+            <div className="formation-card reveal">
               <h3>Doctorat en Management et en Stratégie</h3>
               <p>ISCAE</p>
             </div>
-            <div className="formation-card">
+            <div className="formation-card reveal">
               <h3>Executive MBA</h3>
               <p>Double diplomation - École des Ponts Business School (France) et École Hassania des Travaux Publics (Maroc)</p>
             </div>
-            <div className="formation-card">
+            <div className="formation-card reveal">
               <h3>Master en Sciences et Techniques de Finance</h3>
               <p>Université d'Orléans</p>
             </div>
-            <div className="formation-card">
+            <div className="formation-card reveal">
               <h3>Diplôme d'Administrateur Indépendant</h3>
               <p>En cours</p>
             </div>
@@ -167,11 +257,11 @@ function App() {
               forums internationaux tel que la Global Growth Conférence, le Growth Women Summit...
             </p>
             <div className="distinctions-list">
-              <div className="distinction-item">Challenge Magazine</div>
-              <div className="distinction-item">Industrie du Maroc Magazine</div>
-              <div className="distinction-item">Women Growth Forum</div>
-              <div className="distinction-item">SkilledSphere Women Impact</div>
-              <div className="distinction-item">Les Elles du Maroc</div>
+              <div className="distinction-item reveal">Challenge Magazine</div>
+              <div className="distinction-item reveal">Industrie du Maroc Magazine</div>
+              <div className="distinction-item reveal">Women Growth Forum</div>
+              <div className="distinction-item reveal">SkilledSphere Women Impact</div>
+              <div className="distinction-item reveal">Les Elles du Maroc</div>
             </div>
           </div>
         </div>
@@ -181,61 +271,73 @@ function App() {
       <section id="initiatives" className="initiatives">
         <div className="container">
           <h2>Nos Initiatives</h2>
-            <div className="initiatives-grid">
-              <div className="initiative-card">
-                <div className="card-icon" aria-hidden="true"></div>
-              <h3>Autonomisation des Femmes</h3>
-              <p>
-                Programmes de formation et d'accompagnement pour l'entrepreneuriat féminin 
-                et le leadership dans les secteurs clés de l'économie.
-              </p>
-              <button className="card-btn">En savoir plus</button>
-            </div>
-            <div className="initiative-card">
-                <div className="card-icon" aria-hidden="true"></div>
-              <h3>Développement Durable</h3>
-              <p>
-                Initiatives environnementales et projets de durabilité pour un avenir 
-                plus vert et responsable dans nos communautés.
-              </p>
-              <button className="card-btn">En savoir plus</button>
-            </div>
-            <div className="initiative-card">
-                <div className="card-icon" aria-hidden="true"></div>
-              <h3>Éducation & Formation</h3>
-              <p>
-                Programmes éducatifs innovants et formations professionnelles pour 
-                développer les compétences et créer des opportunités.
-              </p>
-              <button className="card-btn">En savoir plus</button>
-            </div>
-            <div className="initiative-card">
-                <div className="card-icon" aria-hidden="true"></div>
-              <h3>Inclusion Sociale</h3>
-              <p>
-                Projets d'inclusion et d'intégration pour créer des communautés 
-                plus équitables et solidaires.
-              </p>
-              <button className="card-btn">En savoir plus</button>
-            </div>
-            <div className="initiative-card">
-                <div className="card-icon" aria-hidden="true"></div>
-              <h3>Innovation Sociale</h3>
-              <p>
-                Développement de solutions innovantes pour répondre aux défis 
-                sociaux et économiques de notre époque.
-              </p>
-              <button className="card-btn">En savoir plus</button>
-            </div>
-            <div className="initiative-card">
-                <div className="card-icon" aria-hidden="true"></div>
-              <h3>Impact Communautaire</h3>
-              <p>
-                Projets communautaires visant à renforcer la cohésion sociale 
-                et améliorer la qualité de vie des populations.
-              </p>
-              <button className="card-btn">En savoir plus</button>
-            </div>
+          <div className="initiatives-grid">
+            {(() => {
+              const initiatives = [
+                { id: 'women', title: 'Autonomisation des Femmes', desc: "Programmes de formation et d'accompagnement pour l'entrepreneuriat féminin et le leadership dans les secteurs clés de l'économie." },
+                { id: 'sustain', title: 'Développement Durable', desc: "Initiatives environnementales et projets de durabilité pour un avenir plus vert et responsable dans nos communautés." },
+                { id: 'education', title: 'Éducation & Formation', desc: "Programmes éducatifs innovants et formations professionnelles pour développer les compétences et créer des opportunités." },
+                { id: 'inclusion', title: 'Inclusion Sociale', desc: "Projets d'inclusion et d'intégration pour créer des communautés plus équitables et solidaires." },
+                { id: 'innovation', title: 'Innovation Sociale', desc: "Développement de solutions innovantes pour répondre aux défis sociaux et économiques de notre époque." },
+                { id: 'community', title: 'Impact Communautaire', desc: "Projets communautaires visant à renforcer la cohésion sociale et améliorer la qualité de vie des populations." }
+              ]
+
+              const getIcon = (key) => {
+                switch (key) {
+                  case 'Autonomisation des Femmes':
+                    return (
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                        <path d="M12 12a5 5 0 100-10 5 5 0 000 10zm0 2c-4 0-7 2-7 4v2h14v-2c0-2-3-4-7-4z" fill="currentColor" />
+                      </svg>
+                    )
+                  case 'Développement Durable':
+                    return (
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                        <path d="M12 2L15 8l6 1-4.5 4 1 6L12 17l-7.5 4 1-6L1 9l6-1 3-6z" fill="currentColor" />
+                      </svg>
+                    )
+                  case 'Éducation & Formation':
+                    return (
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                        <path d="M12 3L1 9l11 6 9-4.9V17h2V9L12 3z" fill="currentColor" />
+                      </svg>
+                    )
+                  case 'Inclusion Sociale':
+                    return (
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                        <path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4zm0 2c-3.31 0-6 2-6 4v2h12v-2c0-2-2.69-4-6-4z" fill="currentColor" />
+                      </svg>
+                    )
+                  case 'Innovation Sociale':
+                    return (
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                        <path d="M11 2v2H7l4 6-1.5 1L5 4v6H3V2h8zM13 22v-2h4l-4-6 1.5-1L19 20v-6h2v8h-8z" fill="currentColor" />
+                      </svg>
+                    )
+                  case 'Impact Communautaire':
+                    return (
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                        <path d="M12 12c2.67 0 8 1.34 8 4v2H4v-2c0-2.66 5.33-4 8-4zm0-2a4 4 0 100-8 4 4 0 000 8z" fill="currentColor" />
+                      </svg>
+                    )
+                  default:
+                    return (
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                        <path d="M12 2C9.243 2 7 4.243 7 7c0 4.418 5 9 5 9s5-4.582 5-9c0-2.757-2.243-5-5-5z" fill="currentColor" />
+                      </svg>
+                    )
+                }
+              }
+
+              return initiatives.map((it) => (
+                <div className="initiative-card" key={it.id}>
+                  <div className="card-icon" aria-hidden="true">{getIcon(it.title)}</div>
+                  <h3>{it.title}</h3>
+                  <p>{it.desc}</p>
+                  <button className="card-btn">En savoir plus</button>
+                </div>
+              ))
+            })()}
           </div>
         </div>
       </section>
@@ -244,7 +346,7 @@ function App() {
       <section id="contact" className="contact">
         <div className="container">
           <h2>Contact</h2>
-          <div className="contact-content">
+          <div className="contact-content reveal">
             <div className="contact-info">
               <h3>Dr. Imane Belmaati</h3>
               <div className="contact-item">
@@ -289,7 +391,7 @@ function App() {
               </div>
             </div>
           </div>
-          <div className="footer-bottom">
+          <div className="footer-bottom reveal">
             <p>&copy; 2024 Positive Impact Initiatives. Tous droits réservés.</p>
           </div>
         </div>
