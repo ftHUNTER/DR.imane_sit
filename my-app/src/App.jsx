@@ -163,7 +163,7 @@ const scrollToSection = (sectionId, e) => {
             </div>
           </div>
           <div className="hero-image">
-            <img src="https://matinees.industries.ma/wp-content/uploads/2024/03/belmaati.jpg" alt="Dr. Imane Belmaati" />
+            <img src="images.jpeg" alt="Dr. Imane Belmaati" />
           </div>
         </div>
       </section>
