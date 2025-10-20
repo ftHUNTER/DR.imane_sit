@@ -13,6 +13,16 @@ const pastEvents = [
     title: "forum de  la #CGEM Tanger Tetouan Al Hoceima",
     description: "Participation au forum de  la #CGEM Tanger Tetouan Al Hoceima, sous la thématique: «Entrepreneuriat des jeunes, levier de développement socio-économique».",
     image: "pic2.jpeg",
+  } ,
+   {
+    title: "SALON DU LIVRE",
+    description: "dynamiques de réflexion à l’occasion Participation au  salon du livre et réflexion contemporaine sur les défis à relever pour tendre vers un  modèle de croissance économique intensif en capital et  générateur de plus d’emplois au Maroc.",
+    image: "dynamic.jpeg",
+  },
+     {
+    title: "YOUTH DAY Economic Integration Forum",
+    description: "Participation au YOUTH Economic Integration Forum organisé en marge des « annual meetings of International Monetary Fund  and The World Bank ».",
+    image: "youthday.jpeg",
   }
 ];
 
@@ -178,7 +188,7 @@ const scrollToSection = (sectionId, e) => {
             </div>
           </div>
           <div className="hero-image">
-            <img src="images.jpeg" alt="Dr. Imane Belmaati" />
+            <img src="profil.jpeg" alt="Dr. Imane Belmaati" />
           </div>
         </div>
       </section>
@@ -237,41 +247,61 @@ const scrollToSection = (sectionId, e) => {
 
 
       {/******************start*********************************************** */}
-<section className="my-10 bg-gray-900 text-white py-10 px-4">
-  <div className="max-w-6xl mx-auto">
-    <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center text-[#632DE9]">
-      Past Events
-    </h2>
-    <div className="flex flex-col gap-8">
-      {pastEvents.map((event, index) => (
+
+
+<section className="my-16 bg-gray-900 text-white py-12 px-6 md:px-10">
+  <h2 className="text-2xl md:text-4xl font-bold mb-12 text-center text-[#632DE9]" style={{padding: "20px"}}>
+    Past Events 
+  </h2>
+
+  <div className="flex flex-col gap-20 w-full">
+    {pastEvents.map((event, index) => (
+      <div
+        key={index}
+        className={`flex flex-col md:flex-row items-center gap-10 ${
+          index % 2 !== 0 ? "md:flex-row-reverse" : ""
+        }`}
+      >
+        {/* Image */}
         <div
-          key={index}
-          className={`flex flex-col md:flex-row items-center justify-center gap-6 transform transition duration-300 hover:scale-105 ${
-            index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
+          className={`w-full md:w-1/2 relative flex justify-center md:${
+            index % 2 === 0 ? "justify-start md:pl-10" : "justify-end md:pr-10"
           }`}
         >
-          <div className="w-full md:w-1/2 relative flex-shrink-0 flex justify-center">
-            <img
-              src={event.image}
-              alt={event.title}
-              className="w-full max-w-md h-56 md:h-64 object-cover rounded-xl shadow-lg transition-transform duration-300 hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent rounded-xl"></div>
-          </div>
-          <div className="md:w-1/2 text-center md:text-center flex flex-col items-center justify-center flex-shrink">
-            <h3 className="text-2xl font-semibold text-[#632DE9] break-words mb-2">
-              {event.title}
-            </h3>
-            <p className="text-gray-300 text-sm break-words mb-2">{event.description}</p>
-            <button className="mt-2 px-4 py-1 bg-[#632DE9] hover:bg-purple-700 rounded-md font-medium text-sm transition duration-300">
-              Learn More
-            </button>
-          </div>
+          <img
+            src={event.image}
+            alt={event.title}
+            className="w-full md:w-[90%] h-56 sm:h-64 md:h-80 object-cover rounded-2xl shadow-lg transition-transform duration-300 hover:scale-[1.03]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent rounded-2xl"></div>
         </div>
-      ))}
-    </div>
+
+        {/* Text */}
+        <div
+          className={`w-full md:w-1/2 flex flex-col items-center text-center md:${
+            index % 2 === 0
+              ? "items-start text-left md:pl-12"
+              : "items-end text-right md:pr-12"
+          }`}
+        >
+          <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[#632DE9] mb-2 sm:mb-3">
+            {event.title}
+          </h3>
+          <p className="text-sm sm:text-base text-gray-300 mb-4 leading-relaxed max-w-md px-2 sm:px-0">
+            {event.description}
+          </p>
+
+        </div>
+      </div>
+    ))}
   </div>
 </section>
+
+
+
+
+
+
 
 
 
