@@ -114,6 +114,7 @@ const scrollToSection = (sectionId, e) => {
           <nav className="nav">
             <a href="#home" onClick={(e) => scrollToSection('home', e)}>Accueil</a>
             <a href="#about" onClick={(e) => scrollToSection('about', e)}>À propos</a>
+            <a href="#events" onClick={(e) => scrollToSection('events', e)}>Événements</a>
             <a href="#formations" onClick={(e) => scrollToSection('formations', e)}>Formations</a>
             <a href="#distinctions" onClick={(e) => scrollToSection('distinctions', e)}>Distinctions</a>
             <a href="#initiatives" onClick={(e) => scrollToSection('initiatives', e)}>Initiatives</a>
@@ -150,6 +151,7 @@ const scrollToSection = (sectionId, e) => {
         <nav className="sidebar-nav">
           <a href="#home" onClick={(e) => scrollToSection('home', e)}>Accueil</a>
           <a href="#about" onClick={(e) => scrollToSection('about', e)}>À propos</a>
+          <a href="#events" onClick={(e) => scrollToSection('events', e)}>Événements</a>
           <a href="#formations" onClick={(e) => scrollToSection('formations', e)}>Formations</a>
           <a href="#distinctions" onClick={(e) => scrollToSection('distinctions', e)}>Distinctions</a>
           <a href="#initiatives" onClick={(e) => scrollToSection('initiatives', e)}>Initiatives</a>
@@ -236,46 +238,25 @@ const scrollToSection = (sectionId, e) => {
 
 
 
-      {/******************start*********************************************** */}
-<section className="my-10 bg-gray-900 text-white py-10 px-4">
-  <div className="max-w-6xl mx-auto">
-    <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center text-[#632DE9]">
-      Past Events
-    </h2>
-    <div className="flex flex-col gap-8">
-      {pastEvents.map((event, index) => (
-        <div
-          key={index}
-          className={`flex flex-col md:flex-row items-center justify-center gap-6 transform transition duration-300 hover:scale-105 ${
-            index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-          }`}
-        >
-          <div className="w-full md:w-1/2 relative flex-shrink-0 flex justify-center">
-            <img
-              src={event.image}
-              alt={event.title}
-              className="w-full max-w-md h-56 md:h-64 object-cover rounded-xl shadow-lg transition-transform duration-300 hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent rounded-xl"></div>
-          </div>
-          <div className="md:w-1/2 text-center md:text-center flex flex-col items-center justify-center flex-shrink">
-            <h3 className="text-2xl font-semibold text-[#632DE9] break-words mb-2">
-              {event.title}
-            </h3>
-            <p className="text-gray-300 text-sm break-words mb-2">{event.description}</p>
-            <button className="mt-2 px-4 py-1 bg-[#632DE9] hover:bg-purple-700 rounded-md font-medium text-sm transition duration-300">
-              Learn More
-            </button>
+      <section id="events" className="events">
+        <div className="container">
+          <h2>Événements Passés</h2>
+          <div className="events-grid">
+            {pastEvents.map((event, index) => (
+              <div className="event-card reveal" key={index}>
+                <div className="event-image">
+                  <img src={event.image} alt={event.title} />
+                </div>
+                <div className="event-content">
+                  <h3>{event.title}</h3>
+                  <p>{event.description}</p>
+                  <button className="event-btn">En savoir plus</button>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
-      ))}
-    </div>
-  </div>
-</section>
-
-
-
-{/******************end*********************************************** */}
+      </section>
 
 
       {/* Formations Section */}

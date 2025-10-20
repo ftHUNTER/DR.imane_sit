@@ -459,6 +459,132 @@ html, body { overflow-x: hidden; }
   font-weight: 500;
 }
 
+/* Events Section */
+.events {
+  padding: 90px 0;
+  background: linear-gradient(180deg, rgba(226, 232, 240, 0.4) 0%, rgba(248, 250, 252, 0.7) 100%);
+}
+.events::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 48px;
+  background: linear-gradient(to top, rgba(226,232,240,0) 0%, rgba(226,232,240,0.6) 60%, rgba(226,232,240,0.9) 100%);
+}
+
+.events h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #1e293b;
+  margin-bottom: 3rem;
+  font-weight: 700;
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.event-card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.event-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.event-image {
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+  position: relative;
+}
+
+.event-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.event-card:hover .event-image img {
+  transform: scale(1.05);
+}
+
+.event-content {
+  padding: 2rem;
+  text-align: center;
+}
+
+.event-content h3 {
+  font-size: 1.4rem;
+  color: #1e293b;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.event-content p {
+  color: #64748b;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.event-btn {
+  background: #0f766e;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.event-btn:hover {
+  background: #0d5c54;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .events-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .event-image {
+    height: 220px;
+  }
+
+  .event-content {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .event-image {
+    height: 200px;
+  }
+
+  .event-content h3 {
+    font-size: 1.2rem;
+  }
+
+  .event-content p {
+    font-size: 0.95rem;
+  }
+}
+
 /* Formations Section */
 .formations {
   padding: 90px 0;
