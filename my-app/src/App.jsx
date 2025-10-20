@@ -250,7 +250,6 @@ const scrollToSection = (sectionId, e) => {
                 <div className="event-content">
                   <h3>{event.title}</h3>
                   <p>{event.description}</p>
-                  <button className="event-btn">En savoir plus</button>
                 </div>
               </div>
             ))}
