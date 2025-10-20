@@ -541,7 +541,7 @@ html, body { overflow-x: hidden; }
 }
 
 .event-btn {
-  background: #0f766e;
+  background: #632DE9;
   color: white;
   border: none;
   padding: 12px 24px;
@@ -552,7 +552,7 @@ html, body { overflow-x: hidden; }
 }
 
 .event-btn:hover {
-  background: #0d5c54;
+  background: #4e20b5;
   transform: translateY(-2px);
 }
 
