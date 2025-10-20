@@ -120,7 +120,7 @@ const scrollToSection = (sectionId, e) => {
     <>
   <header className={`header ${isScrolled ? 'shrink' : ''}`} ref={headerRef}>
         <div className="header-container">
-          <div className="brand">Positive Impact Initiatives</div>
+          <div className="brand">Dr. Imane Belmaati</div>
           <nav className="nav">
             <a href="#home" onClick={(e) => scrollToSection('home', e)}>Accueil</a>
             <a href="#about" onClick={(e) => scrollToSection('about', e)}>À propos</a>
@@ -171,12 +171,10 @@ const scrollToSection = (sectionId, e) => {
   <section id="home" className="hero reveal">
         <div className="hero-container">
           <div className="hero-content">
-            <h1>Positive Impact Initiatives</h1>
-            <p className="hero-subtitle">La plateforme d'impact nouvelle génération</p>
+            <h1>Dr. Imane Belmaati</h1>
+            {/* <p className="hero-subtitle">La plateforme d'impact nouvelle génération</p> */}
             <p className="hero-quote">
-              « Parce que nous croyons que chacun peut devenir un catalyseur de changement, 
-              et que l'action concrète est la clé d'effets significatifs, durables et 
-              mesurables, nous construisons, avec vous, un monde meilleur. »
+              « PhD| Executive MBA| Master Finance| Expériences: DG SPE| Présidente Assoc.Mondiale SPE| Experte PNUD & Enjeux socio-économiques Emploi Entrepreneuriat Impact Transformation| Keynote Speaker Auteure & Essayiste engagée  »
               <br/><br/>
               <strong>Dr. Imane Belmaati – Présidente et membre fondatrice</strong>
             </p>
