@@ -13,6 +13,16 @@ const pastEvents = [
     title: "forum de  la #CGEM Tanger Tetouan Al Hoceima",
     description: "Participation au forum de  la #CGEM Tanger Tetouan Al Hoceima, sous la thématique: «Entrepreneuriat des jeunes, levier de développement socio-économique».",
     image: "pic2.jpeg",
+  },
+    {
+    title: "forum de  la #CGEM Tanger Tetouan Al Hoceima",
+    description: "Participation au forum de  la #CGEM Tanger Tetouan Al Hoceima, sous la thématique: «Entrepreneuriat des jeunes, levier de développement socio-économique».",
+    image: "pic2.jpeg",
+  },
+    {
+    title: "forum de  la #CGEM Tanger Tetouan Al Hoceima",
+    description: "Participation au forum de  la #CGEM Tanger Tetouan Al Hoceima, sous la thématique: «Entrepreneuriat des jeunes, levier de développement socio-économique».",
+    image: "pic2.jpeg",
   }
 ];
 
