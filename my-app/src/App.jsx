@@ -3,6 +3,26 @@ import './App.css'
 function App() {
 
 
+
+  const conferences = [
+    {
+      title: "Annual Innovation Conference 2025",
+      description:
+        "An inspiring three-day event that unites innovators, creators, and thinkers to discuss the future of technology, design, and entrepreneurship. Join us in Casablanca for a transformative experience filled with keynotes, networking, and workshops.",
+      image:
+        "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1000&q=80",
+    },
+    {
+      title: "Creative Minds Summit 2024",
+      description:
+        "Our 2024 summit celebrated creativity and innovation. From design showcases to tech panels, participants explored how new ideas shape the digital future.",
+      image:
+        "https://images.unsplash.com/photo-1503428593586-e225b39bddfe?auto=format&fit=crop&w=1000&q=80",
+    },
+  ];
+
+
+
 const pastEvents = [
   {
     title: "Switcmed II",
@@ -304,6 +324,54 @@ const scrollToSection = (sectionId, e) => {
 
 
 {/******************end*********************************************** */}
+
+{/*conference  Section */}
+
+
+
+
+    <section className="my-16 bg-gray-900 text-white py-12 px-6 md:px-10" id="conference">
+      <h2
+        className="text-2xl md:text-4xl font-bold mb-12 text-center text-[#632DE9]"
+        style={{ padding: "20px" }}
+      >
+        Conferences
+      </h2>
+
+      <div className="flex flex-col gap-20 w-full">
+        {conferences.map((conf, index) => (
+          <div
+            key={index}
+            className="flex flex-col md:flex-row items-center gap-10"
+          >
+            {/* Image */}
+            <div className="w-full md:w-1/2 relative flex justify-center md:justify-start md:pl-10">
+              <img
+                src={conf.image}
+                alt={conf.title}
+                className="w-full md:w-[90%] h-56 sm:h-64 md:h-80 object-cover rounded-2xl shadow-lg transition-transform duration-300 hover:scale-[1.03]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent rounded-2xl"></div>
+            </div>
+
+            {/* Text */}
+            <div className="w-full md:w-1/2 flex flex-col items-center text-center md:items-start md:text-left md:pl-12">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[#632DE9] mb-2 sm:mb-3">
+                {conf.title}
+              </h3>
+              <p className="text-sm sm:text-base text-gray-300 mb-4 leading-relaxed max-w-md px-2 sm:px-0">
+                {conf.description}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+
+
+
+{/* end conference  Section */}
 
 
       {/* Formations Section */}
