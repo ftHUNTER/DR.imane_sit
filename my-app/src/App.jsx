@@ -10,7 +10,7 @@ function App() {
       description:
         "An inspiring three-day event that unites innovators, creators, and thinkers to discuss the future of technology, design, and entrepreneurship. Join us in Casablanca for a transformative experience filled with keynotes, networking, and workshops.",
       image:
-        "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1000&q=80",
+        "pic-conf-1.jpeg",
     },
     {
       title: "Creative Minds Summit 2024",
@@ -18,6 +18,27 @@ function App() {
         "Our 2024 summit celebrated creativity and innovation. From design showcases to tech panels, participants explored how new ideas shape the digital future.",
       image:
         "https://images.unsplash.com/photo-1503428593586-e225b39bddfe?auto=format&fit=crop&w=1000&q=80",
+    },
+        {
+      title: "Annual Innovation Conference 2025",
+      description:
+        "articipation à la Conférence Mondiale organisée par  l’Organisation Internationale du Travail  sous le thème « From Policy To Practice - The Role Of public and private Employment Agences ».",
+      image:
+        "pic-conf-1.jpeg",
+    },
+    {
+      title: "Creative Minds Summit 2024",
+      description:
+        "Our 2024 summit celebrated creativity and innovation. From design showcases to tech panels, participants explored how new ideas shape the digital future.",
+      image:
+        "pic-conf2.jpeg",
+    },
+        {
+      title: "Annual Innovation Conference 2025",
+      description:
+        "An inspiring three-day event that unites innovators, creators, and thinkers to discuss the future of technology, design, and entrepreneurship. Join us in Casablanca for a transformative experience filled with keynotes, networking, and workshops.",
+      image:
+        "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1000&q=80",
     },
   ];
 
